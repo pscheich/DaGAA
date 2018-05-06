@@ -193,7 +193,7 @@ this.money=[]
   this.tournamentService.getMoney(tid).subscribe(money => {
     let mtemp = money.money;
     for(var i in mtemp){
-      this.money.push({name:this.getPlayer(i).name, money:mtemp[i]})
+      this.money.push({name:this.getPlayer(i).name, money:Math.floor(mtemp[i])})
     }
   },
     err => {

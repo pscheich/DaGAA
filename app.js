@@ -13,9 +13,14 @@ var options = {
   ca: fs.readFileSync('certs/chain.pem')
 };
 https.createServer(options, app).listen(3000);
+var http = require('http');
+http.get('*', function(req, res) {  
+  res.redirect('https://' + req.headers.host + req.url);
+})
 
-// Connect To Database
-mongoose.connect(config.database);
+// have it listen on 8080
+http.listen(3000);
+mongoose.connect(config.database, { useMongoClient: true });
 
 // On Connection
 mongoose.connection.on('connected', () => {
@@ -30,7 +35,7 @@ mongoose.connection.on('error', (err) => {
 
 const tournament = require('./routes/tournament');
 // Port Number
-const port = process.env.PORT || 8080;
+
 // CORS Middleware
 app.use(cors());
 
