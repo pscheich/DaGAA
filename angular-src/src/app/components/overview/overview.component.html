@@ -148,19 +148,19 @@
     <div>
       <h2>{{tournament.name}} in {{tournament.city}} am {{tournament.date}}
 
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newP">Spiele_*x hinzufügen</button>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newP">Spielerz hinzufügen</button>
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newB">Rechnung hinzufügen</button>
       </h2>
     </div>
-    <h3>Spiele_*x
+    <h4>Spielerz
       <a href="#players" class="btn btn-sm" data-toggle="collapse">Aufklappen</a>
-    </h3>
+    </h4>
 
     <div id="players" class="collapse">
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>Spiele_*x</th>
+            <th>Spielerz</th>
             <th>Aktionen</th>
           </tr>
         </thead>
@@ -180,7 +180,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-              <h4 class="modal-title">Spiele_*x hinzufügen</h4>
+              <h4 class="modal-title">Spielerz hinzufügen</h4>
               <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
             </div>
 
@@ -210,7 +210,7 @@
 
             <!-- Modal Header -->
             <div class="modal-header">
-              <h4 class="modal-title">Spiele_*x Löschen</h4>
+              <h4 class="modal-title">Spielerz Löschen</h4>
               <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
             </div>
 
@@ -235,9 +235,9 @@
     </div>
   </div>
   <div>
-      <h3>Rechnungen
+      <h4>Rechnungen
           <a href="#bills" class="btn btn-sm" data-toggle="collapse">Aufklappen</a>
-        </h3>
+        </h4>
   
         <div id="bills" class="collapse">
     <table class="table table-hover">
@@ -270,11 +270,11 @@
   </div>
     <div>
      
-        <h3>Übersicht </h3>
+        <h4>Übersicht </h4>
         <table class="table table-hover">
           <thead>
             <tr>
-              <th>Spiele_*x</th>
+              <th>Spielerz</th>
               <th>Geld</th>
             </tr>
           </thead>
