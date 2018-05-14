@@ -236,9 +236,9 @@
           <td class="align-middle">{{m.money}}</td>
           <td class="align-middle">{{m.deposit}}</td>
           <td class="align-middle">
-            <p [ngClass]="m.open < 0  ? 'text-danger': 'text-success'">
+            <span [ngClass]="m.open < 0  ? 'text-danger': 'text-success'">
               <strong>{{m.open}}</strong>
-            </p>
+            </span>
           </td>
         </tr>
       </tbody>
