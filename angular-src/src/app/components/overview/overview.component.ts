@@ -10,13 +10,13 @@ import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 })
 export class OverviewComponent implements OnInit {
 
-  tournaments:Array<Object>;
+  tournaments: Array<Object>;
   tournament: Object;
   showT: Object;
   player: Object;
   bill: Object;
-  money:Array<Object>;
-  rcount:Array<Object>;
+  money: Array<Object>;
+  rcount: Array<Object>;
 
 
 
@@ -30,7 +30,7 @@ export class OverviewComponent implements OnInit {
     this.player = {}
     this.bill = {}
     this.money = []
-    this.rcount=[]
+    this.rcount = []
   }
 
   refreshTournaments() {
@@ -42,10 +42,10 @@ export class OverviewComponent implements OnInit {
       this.bill = {}
       this.money = []
       this.showT = false;
-      for(let i = 0;i<this.tournaments.length;i++){
+      for (let i = 0; i < this.tournaments.length; i++) {
         this.rcount.push(i)
       }
-      
+
     },
       err => {
         console.log(err);
@@ -153,6 +153,16 @@ export class OverviewComponent implements OnInit {
       this.refreshTournament();
     });
   }
+  sendMoney() {
+    this.tournamentService.sendMoney(this.tournament['_id'],this.player).subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show('Geld geschickt wurde gelöscht.', { cssClass: 'alert-success', timeout: 3000 });
+      } else {
+        this.flashMessage.show('Something went wrong', { cssClass: 'alert-danger', timeout: 3000 });
+      }
+      this.refreshTournament();
+    });
+  }
   usePlayer(pid) {
     console.log('usePlayer: ' + pid);
     this.player = this.tournament['players'].find(function (element) {
@@ -193,46 +203,48 @@ export class OverviewComponent implements OnInit {
     })
   }
 
-getmoney(){
-this.money=[]
-  let tid=this.tournament['_id']
-  this.tournamentService.getMoney(tid).subscribe(money => {
-    let mtemp = money.money;
-    for(var i in mtemp){
-      this.money.push({name:this.getPlayer(i).name, money:Math.floor(mtemp[i])})
-    }
-  },
-    err => {
-      console.log(err);
-      return false;
-    });
+  getmoney() {
+    this.money = []
+    let tid = this.tournament['_id']
+    this.tournamentService.getMoney(tid).subscribe(money => {
+      let mtemp = money.money;
+      for (var i in mtemp) {
+        let p = this.getPlayer(i)
+        let m = Math.floor(mtemp[i]*100)/100
+        this.money.push({ name: p.name, money: m,deposit:p.deposit, open:Math.floor((p.deposit+m)*100)/100 })
+      }
+    },
+      err => {
+        console.log(err);
+        return false;
+      });
     console.log(this.money)
-}
+  }
 
-// moneymoney() {
-//   let money = {}
-//
-//   this.tournament['bills'].forEach(element => {
-//     if (money[element['payed']['pid']]) {
-//       money[element['payed']['pid']] += element['money']
-//     }
-//     else {
-//       money[element['payed']['pid']] = element['money']
-//     }
-//     element['topay'].forEach(pl => {
-//       if ( money[pl['pid']]) {
-//         money[pl['pid']] -= element['money'] / element['topay'].length
-//       }
-//       else {
-//         money[pl['pid']] = element['money'] / element['topay'].length
-//       }
-//
-//     })
-//
-//   });
-//
-//   console.log(money)
-// }
+  // moneymoney() {
+  //   let money = {}
+  //
+  //   this.tournament['bills'].forEach(element => {
+  //     if (money[element['payed']['pid']]) {
+  //       money[element['payed']['pid']] += element['money']
+  //     }
+  //     else {
+  //       money[element['payed']['pid']] = element['money']
+  //     }
+  //     element['topay'].forEach(pl => {
+  //       if ( money[pl['pid']]) {
+  //         money[pl['pid']] -= element['money'] / element['topay'].length
+  //       }
+  //       else {
+  //         money[pl['pid']] = element['money'] / element['topay'].length
+  //       }
+  //
+  //     })
+  //
+  //   });
+  //
+  //   console.log(money)
+  // }
 
   getPlayer(pid) {
     console.log(this.tournament)
