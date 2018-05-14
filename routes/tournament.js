@@ -75,6 +75,7 @@ router.patch('/', (req, res, next) => {
 router.patch('/addplayer', (req, res, next) => {
     let player = {
         name: req.body.player.name,
+        money:0
     };
     Tournament.addPlayer(req.body.tid, player, (err, p) => {
         if (err) {
@@ -92,6 +93,18 @@ router.patch('/delplayer', (req, res, next) => {
             res.json({ success: false, msg: 'Failed to del player' });
         } else {
             res.json({ success: true, msg: 'del player' });
+        }
+    });
+});
+router.patch('/sendMoney', (req, res, next) => {
+    let pid = req.body.pid;
+    let tid = req.body.tid;
+    let deposit = req.body.deposit;
+    Tournament.sendMoney(tid, pid,deposit, (err) => {
+        if (err) {
+            res.json({ success: false, msg: 'Failed to send money' });
+        } else {
+            res.json({ success: true, msg: 'send money' });
         }
     });
 });

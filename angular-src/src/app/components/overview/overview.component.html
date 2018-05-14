@@ -161,6 +161,7 @@
         <thead>
           <tr>
             <th>Darmi</th>
+            <th>Guthaben</th>
             <th>Aktionen</th>
           </tr>
         </thead>
@@ -168,8 +169,10 @@
 
           <tr *ngFor='let p of tournament.players;'>
             <td class="align-middle">{{p.name}}</td>
+            <td class="align-middle">{{p.deposit}}</td>
             <td class="align-middle">
               <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#deleteP" (click)="usePlayer(p._id)">Löschen</button>
+              <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#sendMoney" (click)="usePlayer(p._id)">Geld einzahlen</button>
             </td>
           </tr>
 
@@ -200,6 +203,36 @@
             <div class="modal-footer">
               <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Abbrechen</button>
               <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addPlayer()">Speichern</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- The Modal sendMoney -->
+      <div class="modal fade" id="sendMoney">
+        <div class="modal-dialog  modal-lg">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Geld einzahlen</h4>
+              <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="form-group row">
+                <label class="col-2 col-form-label" for="money">Geld</label>
+                <div class="col-10">
+                  <input type="number" class="form-control" id="money" [(ngModel)]="player.deposit" name="player.deposit">
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Abbrechen</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="sendMoney()">Speichern</button>
             </div>
 
           </div>
@@ -281,13 +314,17 @@
         <thead>
           <tr>
             <th>Darmi</th>
-            <th>Geld</th>
+            <th>Rechnungen</th>
+            <th>Guthaben</th>
+            <th>Offen</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor='let m of money;'>
             <td class="align-middle">{{m.name}}</td>
             <td class="align-middle">{{m.money}}</td>
+            <td class="align-middle">{{m.deposit}}</td>
+            <td class="align-middle"><p [ngClass]="m.open < 0  ? 'text-danger': 'text-success'"><strong>{{m.open}}</strong></p></td>
           </tr>
         </tbody>
       </table>

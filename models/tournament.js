@@ -14,12 +14,13 @@ const TournamentSchema = mongoose.Schema({
         type: String
     },
     players: [{
-        name: { type: String }
+        name: { type: String },
+        deposit: { type: Number }
     }],
     bills: [{
         name: { type: String },
-        topay: { type : Array , "default" : [] },
-        payed: { type:Object },
+        topay: { type: Array, "default": [] },
+        payed: { type: Object },
         money: { type: Number },
 
     }],
@@ -93,17 +94,33 @@ module.exports.addPlayer = function (id, newPlayer, callback) {
         });
 }
 module.exports.delPlayer = function (tid, pid, callback) {
-console.log(tid)
-console.log(pid)
+    console.log(tid)
+    console.log(pid)
     Tournament.update(
-        { _id:tid },
-        { $pull: { players : { _id : pid } } },
+        { _id: tid },
+        { $pull: { players: { _id: pid } } },
         function (error) {
             if (error) {
                 console.log(error);
                 callback(error);
             } else {
                 console.log();
+                callback(null);
+            }
+        });
+}
+module.exports.sendMoney = function (tid, pid, deposit, callback) {
+    console.log(tid)
+    console.log(pid)
+    Tournament.update(
+        { _id: tid, 'players._id': { _id: pid } },
+        { $set: { 'players.$.deposit': deposit } },
+        function (error) {
+            if (error) {
+                console.log(error);
+                callback(error);
+            } else {
+                console.log(deposit);
                 callback(null);
             }
         });
@@ -148,8 +165,8 @@ module.exports.addBill = function (id, newBill, callback) {
 }
 module.exports.delBill = function (tid, bid, callback) {
     Tournament.update(
-        { _id:tid },
-        { $pull: { bills : { _id : bid } } },
+        { _id: tid },
+        { $pull: { bills: { _id: bid } } },
         function (error) {
             if (error) {
                 console.log(error);

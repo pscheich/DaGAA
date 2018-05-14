@@ -69,6 +69,15 @@ export class TournamentService {
     return this.http.patch(ep, {tid,pid}, { headers: headers })
       .map(res => res.json());
   }
+  sendMoney(tid,player) {
+    let headers = new Headers();
+    let pid = player['_id']
+    let deposit = player['deposit']
+    headers.append('Content-Type', 'application/json');
+    let ep = this.prepEndpoint('api/tournament/sendMoney');
+    return this.http.patch(ep, {tid,pid,deposit}, { headers: headers })
+      .map(res => res.json());
+  }
   addBill(tid,bill) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
