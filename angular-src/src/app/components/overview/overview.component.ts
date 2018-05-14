@@ -10,12 +10,13 @@ import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 })
 export class OverviewComponent implements OnInit {
 
-  tournaments: Object;
+  tournaments:Array<Object>;
   tournament: Object;
   showT: Object;
   player: Object;
   bill: Object;
   money:Array<Object>;
+  rcount:Array<Object>;
 
 
 
@@ -29,6 +30,7 @@ export class OverviewComponent implements OnInit {
     this.player = {}
     this.bill = {}
     this.money = []
+    this.rcount=[]
   }
 
   refreshTournaments() {
@@ -40,6 +42,10 @@ export class OverviewComponent implements OnInit {
       this.bill = {}
       this.money = []
       this.showT = false;
+      for(let i = 0;i<this.tournaments.length;i++){
+        this.rcount.push(i)
+      }
+      
     },
       err => {
         console.log(err);
