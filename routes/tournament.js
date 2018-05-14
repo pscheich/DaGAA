@@ -75,8 +75,9 @@ router.patch('/', (req, res, next) => {
 router.patch('/addplayer', (req, res, next) => {
     let player = {
         name: req.body.player.name,
-        money:0
+        deposit:0
     };
+
     Tournament.addPlayer(req.body.tid, player, (err, p) => {
         if (err) {
             res.json({ success: false, msg: 'Failed to add player' });
