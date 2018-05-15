@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
     var foo = Tournament.getTournaments((err, tournaments) => {
         if (err) console.log(err); else
             if (!tournaments) {
-                return res.json({ success: false, msg: 'No tournamentn found' });
+                return res.json({ success: false, msg: 'No tournament found' });
             }
         res.json({
             tournaments
