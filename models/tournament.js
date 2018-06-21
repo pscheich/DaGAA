@@ -42,7 +42,7 @@ module.exports.getTournamentById = function (id, callback) { //Mit Passwort
 }
 module.exports.getTournaments = function (callback) {
 
-    Tournament.find({}, function (err, doc) {
+    Tournament.find({}).sort({date: "desc" }).exec( function (err, doc) {
         if (err) {
             console.error('error posting json: ', err)
             callback(err, null);
