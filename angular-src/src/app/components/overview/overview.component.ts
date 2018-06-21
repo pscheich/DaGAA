@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TournamentService } from '../../services/tournament.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 @Component({
   selector: 'app-overview',
@@ -17,13 +17,15 @@ export class OverviewComponent implements OnInit {
   bill: Object;
   money: Array<Object>;
   rcount: Array<Object>;
+ _tid : Object;
 
 
 
   constructor(
     private tournamentService: TournamentService,
     private router: Router,
-    private flashMessage: FlashMessagesService
+    private flashMessage: FlashMessagesService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.tournaments = [];
     this.tournament = {};
@@ -45,7 +47,10 @@ export class OverviewComponent implements OnInit {
       for (let i = 0; i < this.tournaments.length; i++) {
         this.rcount.push(i)
       }
-
+      if (this._tid != "undefined") {
+        this.openTournament(this._tid);
+        //this._tid = "undefined";
+      }
     },
       err => {
         console.log(err);
@@ -68,7 +73,10 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.refreshTournaments();
+    this.tournament = {};
+    this._tid = this.activatedRoute.snapshot.queryParams["t"];
+        this.refreshTournaments();
+
   }
 
 
@@ -114,6 +122,7 @@ export class OverviewComponent implements OnInit {
       this.showT = true;
       this.getmoney();
       console.log(this.tournament['bills']);
+      this._tid = "undefined";
     },
       err => {
         console.log(err);
@@ -154,7 +163,7 @@ export class OverviewComponent implements OnInit {
     });
   }
   sendMoney() {
-    this.tournamentService.sendMoney(this.tournament['_id'],this.player).subscribe(data => {
+    this.tournamentService.sendMoney(this.tournament['_id'], this.player).subscribe(data => {
       if (data.success) {
         this.flashMessage.show('Geld geschickt wurde gelöscht.', { cssClass: 'alert-success', timeout: 3000 });
       } else {
@@ -210,8 +219,8 @@ export class OverviewComponent implements OnInit {
       let mtemp = money.money;
       for (var i in mtemp) {
         let p = this.getPlayer(i)
-        let m = Math.floor(mtemp[i]*100)/100
-        this.money.push({ name: p.name, money: m,deposit:p.deposit, open:Math.floor((p.deposit+m)*100)/100 })
+        let m = Math.floor(mtemp[i] * 100) / 100
+        this.money.push({ name: p.name, money: m, deposit: p.deposit, open: Math.floor((p.deposit + m) * 100) / 100 })
       }
     },
       err => {

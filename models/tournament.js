@@ -31,6 +31,7 @@ const Tournament = module.exports = mongoose.model('tournament', TournamentSchem
 
 
 module.exports.getTournamentById = function (id, callback) { //Mit Passwort
+    if(id!="undefined"){
     Tournament.findById(id, function (err, doc) {
         if (err) {
             console.error('error posting json: ', err)
@@ -38,7 +39,9 @@ module.exports.getTournamentById = function (id, callback) { //Mit Passwort
             //throw err
         }
         callback(null, doc);
-    });
+    });} else {
+        callback(err, null);
+    }
 }
 module.exports.getTournaments = function (callback) {
 

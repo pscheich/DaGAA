@@ -12,6 +12,7 @@
           <th>Ort</th>
           <th>Datum</th>
           <th>Aktionen</th>
+          <th>Link</th>
         </tr>
       </thead>
       <tbody>
@@ -24,6 +25,7 @@
             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#editT" (click)="useTournament(t._id)">Ändern</button>
             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#deleteT" (click)="useTournament(t._id)">Löschen</button>
           </td>
+          <td><a target="_blank" [routerLink]="['']" [queryParams]="{t: t._id}">Teilen </a></td>
         </tr>
       </tbody>
     </table>
