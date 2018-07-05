@@ -149,6 +149,32 @@ router.patch('/delbill', (req, res, next) => {
         }
     });
 });
+router.patch('/addstuff', (req, res, next) => {
+    console.log(req.body.stuff)
+    let stuff = {
+        name: req.body.stuff.name,
+        guy: req.body.stuff.guy,
+    };
+    Tournament.addStuff(req.body.tid, stuff, (err, b) => {
+        if (err) {
+            res.json({ success: false, msg: 'Failed to add stuff' });
+        } else {
+            res.json({ success: true, msg: 'add stuff' });
+        }
+    });
+});
+router.patch('/delstuff', (req, res, next) => {
+    let sid = req.body.sid;
+    let tid = req.body.tid;
+    console.log('del')
+    Tournament.delStuff(tid, sid, (err) => {
+        if (err) {
+            res.json({ success: false, msg: 'Failed to del stuff' });
+        } else {
+            res.json({ success: true, msg: 'del player' });
+        }
+    });
+});
 router.get('/getmoney/:id', (req, res, next) => {
     var foo = Tournament.getTournamentById(req.params.id, (err, tournament) => {
         if (err) console.log(err); else

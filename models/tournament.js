@@ -24,6 +24,10 @@ const TournamentSchema = mongoose.Schema({
         money: { type: Number },
 
     }],
+    stuff:[{
+        name: { type: String },
+        guy: { type: Object },
+    }]
 }
 );
 
@@ -40,7 +44,7 @@ module.exports.getTournamentById = function (id, callback) { //Mit Passwort
         }
         callback(null, doc);
     });} else {
-        callback(err, null);
+        callback(null, null);
     }
 }
 module.exports.getTournaments = function (callback) {
@@ -170,6 +174,35 @@ module.exports.delBill = function (tid, bid, callback) {
     Tournament.update(
         { _id: tid },
         { $pull: { bills: { _id: bid } } },
+        function (error) {
+            if (error) {
+                console.log(error);
+                callback(error);
+            } else {
+                console.log();
+                callback(null);
+            }
+        });
+}
+module.exports.addStuff = function (id, newStuff, callback) {
+    console.log(newStuff)
+    Tournament.findOneAndUpdate(
+        { _id: id },
+        { $push: { stuff: newStuff } },
+        function (error, success) {
+            if (error) {
+                console.log(error);
+                callback(error, null);
+            } else {
+                console.log(success);
+                callback(null, success);
+            }
+        });
+}
+module.exports.delStuff = function (tid, sid, callback) {
+    Tournament.update(
+        { _id: tid },
+        { $pull: { stuff: { _id: sid } } },
         function (error) {
             if (error) {
                 console.log(error);

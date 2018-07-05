@@ -1,8 +1,8 @@
 <div>
   <div>
     <div>
-      <h1>Turnier Übersicht
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newT" (click)="refreshTournaments()">Neues Turnier anlegen</button>
+      <h1>Festival Übersicht
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newT" (click)="refreshTournaments()">Neues Festival anlegen</button>
       </h1>
     </div>
     <table class="table table-hover">
@@ -25,7 +25,9 @@
             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#editT" (click)="useTournament(t._id)">Ändern</button>
             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#deleteT" (click)="useTournament(t._id)">Löschen</button>
           </td>
-          <td><a target="_blank" [routerLink]="['']" [queryParams]="{t: t._id}">Teilen </a></td>
+          <td>
+            <a target="_blank" [routerLink]="['']" [queryParams]="{t: t._id}">Teilen </a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -36,7 +38,7 @@
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Neues Turnier anlegen</h4>
+            <h4 class="modal-title">Neues Festival anlegen</h4>
             <button type="button" class="close" data-dismiss="modal" (click)="refreshTournaments()">&times;</button>
           </div>
 
@@ -150,11 +152,11 @@
     <div>
       <h2>{{tournament.name}} in {{tournament.city}} am {{tournament.date}}
 
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newP">Darmi hinzufügen</button>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newP">Mensch hinzufügen</button>
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newB">Rechnung hinzufügen</button>
       </h2>
     </div>
-    <h4>Darmis
+    <h4>Mensch
       <a href="#players" class="btn btn-sm" data-toggle="collapse">[...]</a>
     </h4>
 
@@ -162,7 +164,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>Darmi</th>
+            <th>Mensch</th>
             <th>Guthaben</th>
             <th>Aktionen</th>
           </tr>
@@ -226,7 +228,7 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>Darmi</th>
+          <th>Mensch</th>
           <th>Rechnungen</th>
           <th>Guthaben</th>
           <th>Offen</th>
@@ -246,6 +248,25 @@
       </tbody>
     </table>
     <p>Negative Werte bedeuten, dass du Geld bezahlen musst.</p>
+    <h4>Wer hat was             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#newS">Neuer Kram</button></h4>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Was</th>
+          <th>Wer</th>
+          <th>Aktion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let s of tournament.stuff;'>
+          <td class="align-middle">{{s.name}}</td>
+          <td class="align-middle">{{s.guy.name}} </td>
+          <td>
+            <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#deleteS" (click)="useStuff(s._id)">Löschen</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <!-- The Modal newB -->
   <div class="modal fade" id="newB">
@@ -327,95 +348,160 @@
       </div>
     </div>
   </div>
-        <!-- The Modal newP -->
-        <div class="modal fade" id="newP">
-            <div class="modal-dialog  modal-lg">
-              <div class="modal-content">
-    
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">Darmi hinzufügen</h4>
-                  <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
-                </div>
-    
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="form-group row">
-                    <label class="col-2 col-form-label" for="name">Name</label>
-                    <div class="col-10">
-                      <input type="text" class="form-control" id="name" [(ngModel)]="player.name" name="player.name">
-                    </div>
-                  </div>
-                </div>
-    
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Abbrechen</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addPlayer()">Speichern</button>
-                </div>
-    
-              </div>
+  <!-- The Modal newP -->
+  <div class="modal fade" id="newP">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Mensch hinzufügen</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="name">Name</label>
+            <div class="col-10">
+              <input type="text" class="form-control" id="name" [(ngModel)]="player.name" name="player.name">
             </div>
           </div>
-          <!-- The Modal sendMoney -->
-          <div class="modal fade" id="sendMoney">
-            <div class="modal-dialog  modal-lg">
-              <div class="modal-content">
-    
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">Geld einzahlen</h4>
-                  <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
-                </div>
-    
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="form-group row">
-                    <label class="col-2 col-form-label" for="money">Geld</label>
-                    <div class="col-10">
-                      <input type="number" class="form-control" id="money" [(ngModel)]="player.deposit" name="player.deposit">
-                    </div>
-                  </div>
-                </div>
-    
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Abbrechen</button>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="sendMoney()">Speichern</button>
-                </div>
-    
-              </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Abbrechen</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addPlayer()">Speichern</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal sendMoney -->
+  <div class="modal fade" id="sendMoney">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Geld einzahlen</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="money">Geld</label>
+            <div class="col-10">
+              <input type="number" class="form-control" id="money" [(ngModel)]="player.deposit" name="player.deposit">
             </div>
           </div>
-          <!-- The Modal deleteP-->
-          <div class="modal fade" id="deleteP">
-            <div class="modal-dialog  modal-lg">
-              <div class="modal-content">
-    
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">Darmi Löschen</h4>
-                  <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
-                </div>
-    
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="form-group">
-                    <label class="col-form-label">Soll
-                      <strong>{{player.name}}</strong> wirklich gelöscht werden?</label>
-                  </div>
-    
-                </div>
-    
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                  <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Nein</button>
-                  <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="delPlayer(player._id)">Ja</button>
-                </div>
-    
-              </div>
-            </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Abbrechen</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="sendMoney()">Speichern</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal deleteP-->
+  <div class="modal fade" id="deleteP">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Mensch Löschen</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-form-label">Soll
+              <strong>{{player.name}}</strong> wirklich gelöscht werden?</label>
           </div>
 
+        </div>
 
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Nein</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="delPlayer(player._id)">Ja</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal deleteS-->
+  <div class="modal fade" id="deleteS">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Kram Löschen</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="col-form-label">Soll
+              <strong>{{stuff.name}} </strong> wirklich gelöscht werden?</label>
+          </div>
+
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Nein</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="delStuff(stuff._id)">Ja</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal newS -->
+  <div class="modal fade" id="newS">
+    <div class="modal-dialog  modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Kram hinzufügen</h4>
+          <button type="button" class="close" data-dismiss="modal" (click)="refreshTournament()">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="name">Name</label>
+            <div class="col-10">
+              <input type="text" class="form-control" id="name" [(ngModel)]="stuff.name" name="stuff.name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="payed">Von</label>
+            <div class="col-10">
+              <select class="form-control" id="payed" [(ngModel)]="stuff.guy" name="stuff.guy">
+                <option *ngFor="let p of tournament.players" value="{{p._id}}">{{p.name}}</option>
+              </select>
+            </div>
+          </div>        
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal" (click)="refreshTournament()">Abbrechen</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addStuff()">Speichern</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 </div>

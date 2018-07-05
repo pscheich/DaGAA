@@ -92,6 +92,20 @@ export class TournamentService {
     return this.http.patch(ep, {tid,bid}, { headers: headers })
       .map(res => res.json());
   }
+  addStuff(tid,stuff) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let ep = this.prepEndpoint('api/tournament/addstuff');
+    return this.http.patch(ep, {tid,stuff}, { headers: headers })
+      .map(res => res.json());
+  }
+  delStuff(tid,sid) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let ep = this.prepEndpoint('api/tournament/delstuff');
+    return this.http.patch(ep, {tid,sid}, { headers: headers })
+      .map(res => res.json());
+  }
   getMoney(tid) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

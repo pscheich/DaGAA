@@ -15,6 +15,7 @@ export class OverviewComponent implements OnInit {
   showT: Object;
   player: Object;
   bill: Object;
+  stuff: Object;
   money: Array<Object>;
   rcount: Array<Object>;
  _tid : Object;
@@ -31,6 +32,7 @@ export class OverviewComponent implements OnInit {
     this.tournament = {};
     this.player = {}
     this.bill = {}
+    this.stuff={}
     this.money = []
     this.rcount = []
   }
@@ -42,6 +44,7 @@ export class OverviewComponent implements OnInit {
       this.tournament = {};
       this.player = {}
       this.bill = {}
+      this.stuff={}
       this.money = []
       this.showT = false;
       for (let i = 0; i < this.tournaments.length; i++) {
@@ -64,6 +67,7 @@ export class OverviewComponent implements OnInit {
       this.tournament = data.tournament;
       this.player = {};
       this.bill = {}
+      this.stuff={}
       this.getmoney();
     },
       err => {
@@ -73,6 +77,7 @@ export class OverviewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.tournaments = [];
     this.tournament = {};
     this._tid = this.activatedRoute.snapshot.queryParams["t"];
         this.refreshTournaments();
@@ -212,6 +217,36 @@ export class OverviewComponent implements OnInit {
     })
   }
 
+  addStuff() {
+    console.log(this.stuff)
+    this.stuff['guy'] = this.getPlayer(this.stuff['guy'])
+
+    this.tournamentService.addStuff(this.tournament['_id'], this.stuff).subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show('Kram wurde hinzugefügt.', { cssClass: 'alert-success', timeout: 3000 });
+      } else {
+        this.flashMessage.show('Something went wrong', { cssClass: 'alert-danger', timeout: 3000 });
+      }
+      this.refreshTournament();
+    });
+  }
+  delStuff(sid) {
+    this.tournamentService.delStuff(this.tournament['_id'], sid).subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show('Kram wurde gelöscht.', { cssClass: 'alert-success', timeout: 3000 });
+      } else {
+        this.flashMessage.show('Something went wrong', { cssClass: 'alert-danger', timeout: 3000 });
+      }
+      this.refreshTournament();
+    });
+  }
+  useStuff(sid) {
+    console.log('useStuff: ' + sid);
+    this.stuff = this.tournament['stuff'].find(function (element) {
+      return element._id == sid;
+    })
+  }
+
   getmoney() {
     this.money = []
     let tid = this.tournament['_id']
@@ -230,30 +265,6 @@ export class OverviewComponent implements OnInit {
     console.log(this.money)
   }
 
-  // moneymoney() {
-  //   let money = {}
-  //
-  //   this.tournament['bills'].forEach(element => {
-  //     if (money[element['payed']['pid']]) {
-  //       money[element['payed']['pid']] += element['money']
-  //     }
-  //     else {
-  //       money[element['payed']['pid']] = element['money']
-  //     }
-  //     element['topay'].forEach(pl => {
-  //       if ( money[pl['pid']]) {
-  //         money[pl['pid']] -= element['money'] / element['topay'].length
-  //       }
-  //       else {
-  //         money[pl['pid']] = element['money'] / element['topay'].length
-  //       }
-  //
-  //     })
-  //
-  //   });
-  //
-  //   console.log(money)
-  // }
 
   getPlayer(pid) {
     console.log(this.tournament)
