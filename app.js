@@ -12,7 +12,7 @@ var options = {
   cert: fs.readFileSync('certs/cert.pem'),
   ca: fs.readFileSync('certs/chain.pem')
 };
-https.createServer(options, app).listen(3000);
+https.createServer(options, app).listen(6660);
 mongoose.connect(config.database, { useMongoClient: true });
 
 // On Connection

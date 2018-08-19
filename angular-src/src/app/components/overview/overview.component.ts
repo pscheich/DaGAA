@@ -199,6 +199,22 @@ export class OverviewComponent implements OnInit {
       this.refreshTournament();
     });
   }
+  editBill() {
+    console.log(this.bill)
+    this.bill['payed'] = this.getPlayer(this.bill['payed'])
+    for (var i in this.bill['topay']) {
+      this.bill['topay'][i] = this.getPlayer(this.bill['topay'][i])
+    }
+    console.log(this.bill)
+    this.tournamentService.editBill(this.tournament['_id'], this.bill).subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show('Rechnung wurde geändert.', { cssClass: 'alert-success', timeout: 3000 });
+      } else {
+        this.flashMessage.show('Something went wrong', { cssClass: 'alert-danger', timeout: 3000 });
+      }
+      this.refreshTournament();
+    });
+  }
   delBill(bid) {
     console.log('delBillr: ' + bid);
     this.tournamentService.delBill(this.tournament['_id'], bid).subscribe(data => {
@@ -212,9 +228,11 @@ export class OverviewComponent implements OnInit {
   }
   useBill(bid) {
     console.log('useBill: ' + bid);
+   
     this.bill = this.tournament['bills'].find(function (element) {
       return element._id == bid;
     })
+ console.log(this.bill);
   }
 
   addStuff() {

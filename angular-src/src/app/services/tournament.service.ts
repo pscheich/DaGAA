@@ -85,6 +85,13 @@ export class TournamentService {
     return this.http.patch(ep, {tid,bill}, { headers: headers })
       .map(res => res.json());
   }
+  editBill(tid,bill) {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let ep = this.prepEndpoint('api/tournament/editbill');
+    return this.http.patch(ep, {tid,bill}, { headers: headers })
+      .map(res => res.json());
+  }
   delBill(tid,bid) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

@@ -137,6 +137,23 @@ router.patch('/addbill', (req, res, next) => {
         }
     });
 });
+router.patch('/editbill', (req, res, next) => {
+    console.log(req.body.bill)
+    let bill = {
+        _id: req.body.bill._id,
+        name: req.body.bill.name,
+        topay: req.body.bill.topay,
+        payed: req.body.bill.payed,
+        money: req.body.bill.money,
+    };
+    Tournament.editBill(req.body.tid, bill, (err, b) => {
+        if (err) {
+            res.json({ success: false, msg: 'Failed to edit bill' });
+        } else {
+            res.json({ success: true, msg: 'edit bill' });
+        }
+    });
+});
 router.patch('/delbill', (req, res, next) => {
     let bid = req.body.bid;
     let tid = req.body.tid;
@@ -182,7 +199,6 @@ router.get('/getmoney/:id', (req, res, next) => {
                 return res.json({ success: false, msg: 'No Tournament found' });
             }
         var money = {}
-        console.log(tournament)
         tournament['bills'].forEach(element => {
             if (money[element['payed']['pid']]) {
                 money[element['payed']['pid']] += element['money']
@@ -199,7 +215,7 @@ router.get('/getmoney/:id', (req, res, next) => {
                 }
 
             })
-
+        
         });
         console.log(money)
         res.json({

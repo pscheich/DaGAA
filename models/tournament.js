@@ -184,6 +184,24 @@ module.exports.delBill = function (tid, bid, callback) {
             }
         });
 }
+module.exports.editBill = function (id, newBill, callback) {
+    console.log(newBill)
+    Tournament.update(
+        { _id: id, "bills._id" : newBill._id },
+        {"$set": { "bills.$.money": newBill.money,
+        "bills.$.payed": newBill.payed,
+        "bills.$.name": newBill.name,
+        "bills.$.topay": newBill.topay } },
+        function (error, success) {
+            if (error) {
+                console.log(error);
+                callback(error, null);
+            } else {
+                console.log(success);
+                callback(null, success);
+            }
+        });
+}
 module.exports.addStuff = function (id, newStuff, callback) {
     console.log(newStuff)
     Tournament.findOneAndUpdate(
